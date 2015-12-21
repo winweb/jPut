@@ -6,7 +6,7 @@
  * last Update: Multiple Expression
  */
 var jPut = [];
-jPut.auto = !0,
+jPut.auto = 0,
     function($) {
         $.fn.jPut = function(options) {
             function json_value(t, a) {
@@ -56,7 +56,7 @@ jPut.auto = !0,
                         } catch (e) {
                             html = html.replace(value, ""), console.log("jPut:" + e.message)
                         }
-                    }), html = html.replace("jsrc", "src"), 0 == options.prepend ? main.append(html) : main.prepend(html), jrepeat.length > 0 && jrepeat.each(function() {
+                    }), html = html.replace("jsrc", "src"), instance = $($.trim(html)), lastInstance=(0 == options.prepend ? main.append(instance) : main.prepend(instance)), $.isFunction(options.doneOfFetch) && options.doneOfFetch.call(this,options.jsonData[i],instance), jrepeat.length > 0 && jrepeat.each(function() {
                         $("[jrepeat-" + i + '="' + $(this).attr("jrepeat") + '"]').jPut({
                             jsonData: json[$(this).attr("jrepeat")],
                             name: $(this).attr("jrepeat"),
@@ -66,8 +66,9 @@ jPut.auto = !0,
                             }
                         })
                     })
-                }), $.isFunction(options.done) && options.done.call(this, options.jsonData)
-            }
+                   
+                }), $.isFunction(options.done) && options.done.call(this, options.jsonData,lastInstance)
+            }            
             Object.defineProperty(this, "data", {
                 get: function() {
                     return options.jsonData
@@ -109,7 +110,8 @@ jPut.auto = !0,
                     ajax_jsonpCallback: "",
                     template: "",
                     done: function() {},
-                    error: function() {}
+                    error: function() {},
+                    doneOfFetch: function(){}
                 },
                 options = $.extend({}, defaults, options),
                 html;
